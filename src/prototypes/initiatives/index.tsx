@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { BodyS, Button, Dropdown, H2, H4, IconButton, MassActionsCounter, MassActionsStatic, PopupProvider, Select, Switch, TextM } from '@daisforge/ui';
 import { Canvas, TableCanvas, type ColumnConfig, type SortColumn } from '@daisforge/ui/components/TableCanvas';
 import { IconAppsFill, IconMenu, IconSearch, IconCalendarOutline, IconHelpCircleOutline, IconChatOutline, IconBellOutline, IconChevronDown, IconChevronUp, IconChevronLeft, IconClose, IconDotsVerticalCenteredOutline, IconFilter, IconWarningTriangleOutline, IconInfoCircleFill, IconUploadOutline, IconDownload, IconMagic } from '@daisforge/ui/icons';
-import { dataOrchid } from '@daisforge/ui/tokens';
+import { dataOrchid, onDarkTextPrimary } from '@daisforge/ui/tokens';
 import { InitiativeForm } from './InitiativeForm';
 import { initialRows, formatNumber, parseCsv, type Initiative, type InitiativeFormValues } from './data';
 import * as S from './styles';
@@ -33,6 +33,7 @@ function InitiativesScreen() {
   const [menu, setMenu] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
   const [bulkCollapsed, setBulkCollapsed] = useState(false);
+  const [scoreColors, setScoreColors] = useState<{ background?: string; text?: string }>({});
   const groupState = useState<string[]>([]);
   const sorting = useState<readonly SortColumn[]>([]);
   const selection = useState<ReadonlySet<string>>(new Set(['initiative-2', 'initiative-4']));
@@ -40,6 +41,18 @@ function InitiativesScreen() {
   const snapshot = useRef<Initiative[] | null>(null);
   const upload = useRef<HTMLInputElement>(null);
   const root = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    if (!root.current) return;
+    // Canvas fillStyle needs computed colors; it cannot resolve CSS var() tokens.
+    const probe = document.createElement('span');
+    root.current.append(probe);
+    const resolve = (token: string) => {
+      probe.style.color = token;
+      return getComputedStyle(probe).color;
+    };
+    setScoreColors({ background: resolve(dataOrchid), text: resolve(onDarkTextPrimary) });
+    probe.remove();
+  }, []);
   useEffect(() => { if (!notice) return; const timeout = setTimeout(() => setNotice(''), 4500); return () => clearTimeout(timeout); }, [notice]);
   useEffect(() => {
     if (!menu) return;
@@ -54,14 +67,14 @@ function InitiativesScreen() {
   for (const [key] of numericColumns) totals[key] = found.reduce((sum, row) => sum + row[key], 0);
   const columns = useMemo<ColumnConfig<Initiative, Initiative>[]>(() => [
     { key: 'name', name: 'Группировка', width: 300, sortingType: 'stringSort', editingCell: { component: 'inputString' }, rowsGrouping: { columnGroupLabel: 'Инициатива' }, renderSummaryCell: () => 'Итого' },
-    { key: 'score', name: 'Оценка', width: 150, sortingType: 'numberSort', renderCell: ({ row }) => <Canvas.Container alignItems="center" justifyContent="center"><Canvas.Badge text={row.score.toFixed(1).replace('.', ',')} size="s" view="accent" customBackgroundColor={dataOrchid} rightIcon={<IconMagic />} /></Canvas.Container>, renderSummaryCell: () => '' },
+    { key: 'score', name: 'Оценка', width: 150, sortingType: 'numberSort', renderCell: ({ row }) => <Canvas.Container alignItems="center" justifyContent="center"><Canvas.Badge text={row.score.toFixed(1).replace('.', ',')} size="s" view="accent" customBackgroundColor={scoreColors.background} customColor={scoreColors.text} rightIcon={<IconMagic />} /></Canvas.Container>, renderSummaryCell: () => '' },
     { key: 'year', name: 'Плановый год', width: 150, sortingType: 'numberSort', editingCell: { component: 'inputNumber' }, rowsGrouping: { columnGroupLabel: 'Плановый год' }, renderSummaryCell: () => '' },
     { key: 'status', name: 'Статус', width: 150, rowsGrouping: { columnGroupLabel: 'Статус' }, editingCell: { component: 'select', options: { type: 'constant', options: ['В работе', 'На согласовании', 'Завершена'].map(value => ({ value, text: value })) } }, renderCell: ({ row }) => <Canvas.Container alignItems="center" justifyContent="center"><Canvas.Badge text={row.status} view="accent" transparent size="s" /></Canvas.Container>, renderSummaryCell: () => '' },
     ...numericColumns.map(([key, name], index): ColumnConfig<Initiative, Initiative> => ({ key, name, width: index > 2 ? 158 : 150, sortingType: 'numberSort', editingCell: { component: 'inputNumber' }, contentFormat: { type: 'number', decimalSeparator: ',', thousandSeparator: ' ', alignContent: 'right', minimumFractionDigits: 2, maximumFractionDigits: 2 }, renderSummaryCell: ({ row }) => formatNumber(row[key]),
       renderHeaderCell: index > 2 ? () => <Canvas.Container direction="column" justifyContent="center" padding={{ left: 16, right: 8 }} gap={2}><Canvas.Text>{name}</Canvas.Text><Canvas.Text>Бизнес</Canvas.Text></Canvas.Container> : undefined,
     })),
     ...(showPlan ? [{ key: 'block', name: 'Бизнес-план', width: 220, rowsGrouping: { columnGroupLabel: 'Блок' } }] : []),
-  ], [showPlan]);
+  ], [showPlan, scoreColors]);
   const changeRows = (changed: Initiative[]) => { const byId = new Map(changed.map(row => [row.id, row])); setRows(previous => previous.map(row => byId.get(row.id) ?? row)); };
   function changeSelectedStatus(nextStatus: string) {
     const count = rows.filter(row => selection[0].has(row.id)).length;
