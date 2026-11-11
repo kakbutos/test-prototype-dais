@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
-import { BodyS, Button, H2, H4, IconButton, Select, Switch, TextM } from '@daisforge/ui';
+import { BodyS, Button, Dropdown, H2, H4, IconButton, MassActionsCounter, MassActionsStatic, PopupProvider, Select, Switch, TextM } from '@daisforge/ui';
 import { Canvas, TableCanvas, type ColumnConfig, type SortColumn } from '@daisforge/ui/components/TableCanvas';
-import { IconAppsFill, IconMenu, IconSearch, IconCalendarOutline, IconHelpCircleOutline, IconChatOutline, IconBellOutline, IconChevronDown, IconChevronLeft, IconClose, IconFilter, IconWarningTriangleOutline, IconInfoCircleFill, IconUploadOutline, IconDownload, IconMagic } from '@daisforge/ui/icons';
+import { IconAppsFill, IconMenu, IconSearch, IconCalendarOutline, IconHelpCircleOutline, IconChatOutline, IconBellOutline, IconChevronDown, IconChevronUp, IconChevronLeft, IconClose, IconDotsVerticalCenteredOutline, IconFilter, IconWarningTriangleOutline, IconInfoCircleFill, IconUploadOutline, IconDownload, IconMagic } from '@daisforge/ui/icons';
 import { dataOrchid } from '@daisforge/ui/tokens';
 import { InitiativeForm } from './InitiativeForm';
 import { initialRows, formatNumber, parseCsv, type Initiative, type InitiativeFormValues } from './data';
@@ -19,6 +19,10 @@ function download(rows: Initiative[], name = 'Инициативы.csv') {
 }
 
 export default function Initiatives() {
+  return <PopupProvider><InitiativesScreen /></PopupProvider>;
+}
+
+function InitiativesScreen() {
   const [rows, setRows] = useState<Initiative[]>(() => structuredClone(initialRows));
   const [creating, setCreating] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
@@ -28,6 +32,7 @@ export default function Initiatives() {
   const [showPlan, setShowPlan] = useState(false);
   const [menu, setMenu] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
+  const [bulkCollapsed, setBulkCollapsed] = useState(false);
   const groupState = useState<string[]>([]);
   const sorting = useState<readonly SortColumn[]>([]);
   const selection = useState<ReadonlySet<string>>(new Set(['initiative-2', 'initiative-4']));
@@ -58,6 +63,18 @@ export default function Initiatives() {
     ...(showPlan ? [{ key: 'block', name: 'Бизнес-план', width: 220, rowsGrouping: { columnGroupLabel: 'Блок' } }] : []),
   ], [showPlan]);
   const changeRows = (changed: Initiative[]) => { const byId = new Map(changed.map(row => [row.id, row])); setRows(previous => previous.map(row => byId.get(row.id) ?? row)); };
+  function changeSelectedStatus(nextStatus: string) {
+    const count = rows.filter(row => selection[0].has(row.id)).length;
+    setRows(previous => previous.map(row => selection[0].has(row.id) ? { ...row, status: nextStatus } : row));
+    setStatus('');
+    setNotice(`Статус «${nextStatus}» установлен для инициатив: ${count}`);
+  }
+  const statusActions = ['В работе', 'На согласовании', 'Завершена'].map(value => ({ value, label: value }));
+  function runBulkAction(value: string) {
+    if (value === 'download') download(rows.filter(row => selection[0].has(row.id)), 'Выбранные инициативы.csv');
+    else if (value === 'clear') selection[1](new Set());
+    else if (statusActions.some(item => item.value === value)) changeSelectedStatus(value);
+  }
   function changeTab(index: number) {
     if (editing[0]) { editing[1](false); snapshot.current = null; setNotice('Изменения сохранены'); }
     setActiveTab(index);
@@ -117,11 +134,37 @@ export default function Initiatives() {
     <S.TableSurface aria-label="Таблица инициатив"><TableCanvas rows={visible} columnConfig={columns} bottomSummaryRows={[totals]} tableConfig={{
       containerStyle: { height: 'max(420px, calc(100dvh - 344px))' }, rowSize: { default: 'big', showInControl: false }, rowHeight: 48, headerRowHeight: 40,
       searching: { enabled: true, searchQueryState: [query, setQuery], debounceDelay: 100, placeholder: 'Поиск' },
-      selecting: { state: selection, rowKeyGetter, showDefault: true, showInControl: false, hideSummaryCheckbox: true }, sorting: { state: sorting }, rowsGrouping: { rowKeyGetter, groupByState: groupState }, resizableColumn: true,
+      selecting: { state: selection, rowKeyGetter, showDefault: true, showInControl: false }, sorting: { state: sorting }, rowsGrouping: { rowKeyGetter, groupByState: groupState }, resizableColumn: true,
       summaryRows: { showDefault: true, showInControl: false }, columnsControl: { enable: true, hiding: true, pinning: true, reorderingHeader: true, pinnedDefault: ['name'] },
       editing: { rowKeyGetter, onRowsChange: changeRows, enabled: editing, showButtons: false },
-      controlBlock: { size: 's', rightSideInner: [{ text: 'Загрузить', contentLeft: <IconUploadOutline size="s" />, onClick: () => upload.current?.click() }, { text: 'Скачать', contentLeft: <IconDownload size="s" />, onClick: () => download(found) }] },
-    }} /></S.TableSurface>
+      controlBlock: {
+        size: 's',
+        rightSideInner: [{ text: 'Загрузить', contentLeft: <IconUploadOutline size="s" />, onClick: () => upload.current?.click() }, { text: 'Скачать', contentLeft: <IconDownload size="s" />, onClick: () => download(found) }],
+        massActionPanel: { show: false, buttons: [] },
+      },
+    }} />
+      {selection[0].size > 0 && !creating && <S.BulkActions aria-label="Действия с выбранными инициативами">
+        <MassActionsStatic position="static"><S.Row>
+          <MassActionsCounter selectedCount={selection[0].size} showCheckbox={false} label="Выбрано" />
+          {bulkCollapsed ? <Dropdown placement="top" portal="document" items={[
+            { value: 'status', label: 'Изменить статус', items: statusActions },
+            { value: 'download', label: 'Скачать выбранные', contentLeft: <IconDownload size="s" /> },
+            { value: 'clear', label: 'Снять выделение' },
+          ]} onItemSelect={item => runBulkAction(String(item.value))}>
+            <IconButton size="s" view="secondary" aria-label="Действия с выбранными"><IconDotsVerticalCenteredOutline size="s" /></IconButton>
+          </Dropdown> : <>
+            <Button size="s" view="clear" onClick={() => selection[1](new Set())}>Сбросить всё</Button>
+            <Dropdown placement="top" portal="document" items={statusActions} onItemSelect={item => changeSelectedStatus(String(item.value))}>
+              <Button size="s" view="secondary" contentRight={<IconChevronDown size="xs" />}>Изменить статус</Button>
+            </Dropdown>
+            <Button size="s" view="secondary" contentLeft={<IconDownload size="s" />} onClick={() => runBulkAction('download')}>Скачать выбранные</Button>
+          </>}
+          <IconButton size="s" view="clear" aria-label={bulkCollapsed ? 'Развернуть массовые действия' : 'Свернуть массовые действия'} onClick={() => setBulkCollapsed(value => !value)}>
+            {bulkCollapsed ? <IconChevronUp size="s" /> : <IconChevronDown size="s" />}
+          </IconButton>
+        </S.Row></MassActionsStatic>
+      </S.BulkActions>}
+    </S.TableSurface>
     <input type="file" ref={upload} hidden accept=".csv,text/csv" aria-label="Загрузить инициативы из CSV" onChange={importCsv} />
     {creating && <InitiativeForm onClose={() => setCreating(false)} onCreate={create} />}
     {notice && <S.Notice role="status"><BodyS>{notice}</BodyS><IconButton size="xs" view="clear" aria-label="Закрыть уведомление" onClick={() => setNotice('')}><IconClose size="xs" color="inherit" /></IconButton></S.Notice>}
