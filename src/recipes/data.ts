@@ -1,0 +1,4 @@
+export type CollectionItem = { id: string; name: string; block: string; score: number; quantity: number; points: number; shelfA: number; shelfB: number };
+const names = ['Бумажный кораблик', 'Лунный фонарик', 'Зелёный кубик', 'Облачная открытка', 'Полосатый шарик', 'Звёздная наклейка', 'Мягкий помпон', 'Цветной карандаш', 'Деревянный волчок', 'Радужная ленточка', 'Картонный домик', 'Солнечный значок'];
+export const initialRows: CollectionItem[] = names.map((name, index) => ({ id: `ITEM-${String(index + 1).padStart(3, '0')}`, name, block: ['Коралловые', 'Мятные', 'Лиловые'][index % 3], score: Number((0.5 + index % 5 / 10).toFixed(1)), quantity: 8 + index * 3, points: 12 + index * 2.5, shelfA: 4 + index, shelfB: 4 + index * 2 }));
+export const formatNumber = (n: number) => new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);

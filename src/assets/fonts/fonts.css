@@ -1,0 +1,112 @@
+/* SB Sans 0.2.0 — source URLs and hashes in SOURCES.json. */
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-Italic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-SemiboldItalic.woff2') format('woff2');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-Semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-LightItalic.woff2') format('woff2');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-BoldItalic.woff2') format('woff2');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SB Sans Text';
+    src: url('./SBSansText-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Display';
+    src: url('./SBSansDisplay-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Display';
+    src: url('./SBSansDisplay-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Display';
+    src: url('./SBSansDisplay-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Display';
+    src: url('./SBSansDisplay-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Display';
+    src: url('./SBSansDisplay-Semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SB Sans Display';
+    src: url('./SBSansDisplay-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}

@@ -1,0 +1,104 @@
+{
+  "stylesheets": [
+    "https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansText.0.2.0.css",
+    "https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.2.0.css"
+  ],
+  "fonts": [
+    {
+      "file": "SBSansText-Light.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-Light.woff2",
+      "sha256": "004697ded1bc1002f44abf86ac9e07b6f58eaabdd0899fb86afc881fa68e90d4",
+      "bytes": 39224
+    },
+    {
+      "file": "SBSansText-Italic.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-Italic.woff2",
+      "sha256": "2b2d6dfd3b07dafa16e9d0b64d2713491f9338a6c04760f20652050ecac75168",
+      "bytes": 39872
+    },
+    {
+      "file": "SBSansText-SemiboldItalic.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-SemiboldItalic.woff2",
+      "sha256": "f8e8d4a4b0894fef5d77da87fb8c2557351c28953364c6c9275d464eed47e2b6",
+      "bytes": 42236
+    },
+    {
+      "file": "SBSansText-Thin.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-Thin.woff2",
+      "sha256": "fbadff9f628f2b4e99825988978b16a3a6eba77cf5ebe9eb897a28f2721d207e",
+      "bytes": 37476
+    },
+    {
+      "file": "SBSansText-Regular.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-Regular.woff2",
+      "sha256": "79f582f8322ed6b504af4960333fca24dfc6d206ebe92a07ca6dbbf46b55a289",
+      "bytes": 39480
+    },
+    {
+      "file": "SBSansText-Semibold.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-Semibold.woff2",
+      "sha256": "44fec0fbbe87a73b27d026fae5d206eb121193dc7430e2849594623abe8acd8d",
+      "bytes": 43736
+    },
+    {
+      "file": "SBSansText-LightItalic.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-LightItalic.woff2",
+      "sha256": "161f1c2ffae94d30a444d09c502925abfbc090811a338e800a9b9eb7065665b0",
+      "bytes": 40400
+    },
+    {
+      "file": "SBSansText-Bold.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-Bold.woff2",
+      "sha256": "b0f72bac7362ff37cff2c3ec06920b31df4a09f806a56bef1ea076104b7bda4d",
+      "bytes": 41168
+    },
+    {
+      "file": "SBSansText-BoldItalic.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-BoldItalic.woff2",
+      "sha256": "629a0d466353b32054331b12da77082fc60fc20b7f657eb5827c00980d5d20ef",
+      "bytes": 42348
+    },
+    {
+      "file": "SBSansText-Medium.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansText.0.2.0/SBSansText-Medium.woff2",
+      "sha256": "e9d247693a763a50a98d5dcebd5619f30ecade84b8153dcd1cb16ed379686be4",
+      "bytes": 37664
+    },
+    {
+      "file": "SBSansDisplay-Light.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansDisplay.0.2.0/SBSansDisplay-Light.woff2",
+      "sha256": "dcddfa143817eb5310a4fd7e7af6114e49e9b5481cbcde2eb4ad54ca64b827da",
+      "bytes": 34956
+    },
+    {
+      "file": "SBSansDisplay-Thin.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansDisplay.0.2.0/SBSansDisplay-Thin.woff2",
+      "sha256": "eca82af6e6a450d06e273f45776d6ec0ffea725f557d70e17f50fd56187961ba",
+      "bytes": 35160
+    },
+    {
+      "file": "SBSansDisplay-Bold.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansDisplay.0.2.0/SBSansDisplay-Bold.woff2",
+      "sha256": "d9efa4bed54b226cdba843a3b7b3754cd8efaca11876a8839ba0ac58a32dc950",
+      "bytes": 39460
+    },
+    {
+      "file": "SBSansDisplay-Regular.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansDisplay.0.2.0/SBSansDisplay-Regular.woff2",
+      "sha256": "0b4bce768b91f77e384b3088fdcbf71af94ce8b3b331175d81c45f0e1648a6c8",
+      "bytes": 40172
+    },
+    {
+      "file": "SBSansDisplay-Semibold.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansDisplay.0.2.0/SBSansDisplay-Semibold.woff2",
+      "sha256": "fbad9079fbef813a5591c388e36b3dfab45edbf740e37df2ad5075ae4851e8ba",
+      "bytes": 45460
+    },
+    {
+      "file": "SBSansDisplay-Medium.woff2",
+      "source": "https://cdn-app.sberdevices.ru/shared-static/0.0.0/fonts/SBSansDisplay.0.2.0/SBSansDisplay-Medium.woff2",
+      "sha256": "24490496e06316d75565b080989e959f275f5cfb73261cc6aa12da6236e080aa",
+      "bytes": 41908
+    }
+  ]
+}
